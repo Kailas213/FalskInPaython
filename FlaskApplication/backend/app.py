@@ -1,0 +1,102 @@
+from flask import Flask, request
+from dotenv import load_dotenv
+import pymongo
+from pymongo import MongoClient
+import certifi
+
+# Your MongoDB Atlas URI
+uri = "mongodb://kailas123:kailas123@ac-i1yahd2-shard-00-00.xigsnql.mongodb.net:27017,ac-i1yahd2-shard-00-01.xigsnql.mongodb.net:27017,ac-i1yahd2-shard-00-02.xigsnql.mongodb.net:27017/?ssl=true&replicaSet=atlas-6c0yqw-shard-0&authSource=admin&retryWrites=true&w=majority&appName=MyFirstClusterForLearning"
+
+# Load environment variables from .env file
+load_dotenv()
+
+app = Flask(__name__)
+
+@app.route('/mongo_connect')
+def mongo_connect():
+    try:
+        # Create a single client instance for the entire application lifetime
+        # using the correct SSL/TLS configuration
+        client = MongoClient(uri, tlsCAFile=certifi.where())
+
+        # Test the connection by listing databases
+        client.admin.command('ping') # A light-weight way to test the connection
+        
+        # Access a database and collection
+        db = client["sample_mflix"]
+        collection = db["myCollection"]
+
+        # Example insert
+        collection.insert_one({"name": "Kailas", "type": "test"})
+
+        print("Inserted successfully!")
+        return "Connected to MongoDB successfully!"
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+@app.route('/add_user', methods=['POST'])
+def add_user(): 
+    form_data = dict(request.json)
+    client = MongoClient(uri, tlsCAFile=certifi.where())
+    print(form_data) 
+    db = client["sample_mflix"]
+    collection = db["myCollection"]   
+    collection.insert_one(form_data)
+    return "User added successfully!"
+
+@app.route('/view_users')
+def view_users():
+    client = MongoClient(uri, tlsCAFile=certifi.where())
+    db = client["sample_mflix"]
+    collection = db["myCollection"]   
+    users = list(collection.find({}, {'_id': 0}))  # Exclude the _id field for cleaner output
+    data={"users":users}
+    return data
+
+@app.route('/about')
+def About():
+    return "About Page </br> This is a simple Flask application.";
+
+@app.route('/api/<name>')
+def Api(name):
+    
+    length=len(name)
+
+    if length > 5:
+        return f'Hello {name},<br/> The name is long.'
+    else:
+        return f"Hello {name}, Nice name"
+    
+@app.route('/app/oprations/<int:num1>/<int:num2>/<operation>')
+def Operations(num1, num2, operation):
+    if operation == 'add':
+        result = num1 + num2  
+    elif operation == 'subtract':
+        result = num1 - num2    
+    elif operation == 'multiply': 
+        result = num1 * num2
+    elif operation == 'divide':
+        if num2 != 0:
+            result = num1 / num2
+        else:
+            return "Error: Division by zero is not allowed."
+    else:
+        return "Error: Invalid operation. Use add, subtract, multiply, or divide."  
+    return str(result);
+
+@app.route('/app/request')
+def Request():
+    name=request.values.get('name');
+    age=request.values.get('age');
+    age=int(age) 
+    if age>18:
+        return f"Hello {name}, you are an adult.";
+    elif age is not None:
+        return f"Hello {name}, you are a minor.";   
+    
+    return "This is a request page. You can add more functionality here.";
+
+if __name__== '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True);
+
+
