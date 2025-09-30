@@ -1,4 +1,0 @@
-flask
-pymango
-dnspaython
-paython-dotenv

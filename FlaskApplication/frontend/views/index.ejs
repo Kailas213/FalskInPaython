@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Submission</title>
+</head>
+<body>
+    <h1>Submit Data to Flask Backend</h1>
+    <% if (typeof message !== 'undefined') { %>
+        <p><%= message %></p>
+    <% } %> 
+    <form action="/add_user" method="POST">
+
+        <label>Name: </label>
+        <input type="text" name="name" required /><br/>
+        <label>Email: </label>
+        <input type="email" name="email" required /><br/>
+        <label>Age:</label>
+        <input type="age" name="age" required /><br/>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

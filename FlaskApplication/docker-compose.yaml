@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    container_name: flask_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://kailas123:kailas123@ac-i1yahd2-shard-00-00.xigsnql.mongodb.net:27017,ac-i1yahd2-shard-00-01.xigsnql.mongodb.net:27017,ac-i1yahd2-shard-00-02.xigsnql.mongodb.net:27017/?ssl=true&replicaSet=atlas-6c0yqw-shard-0&authSource=admin&retryWrites=true&w=majority&appName=MyFirstClusterForLearning
+
+  frontend:
+    build: ./frontend
+    container_name: node_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
