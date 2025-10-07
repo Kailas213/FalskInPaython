@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.render('index'); // must match views/index.ejs
 });
-const SubmitURL = 'http://localhost:8000/add_user';
+const SubmitURL = 'http://localhost:5000/add_user';
 
 
 
