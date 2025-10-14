@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.render('index'); // must match views/index.ejs
 });
-const SubmitURL = 'http://backend.carbikeinfo.in/add_user';
+const SubmitURL = 'http://backed-on-separate-instance.carbikeinfo.in/add_user';
 
 
 
