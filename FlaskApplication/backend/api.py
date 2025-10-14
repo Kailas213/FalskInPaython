@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import pymongo
 from pymongo import MongoClient
 import certifi
+from flask_cors import CORS
 import os
 
 load_dotenv()
@@ -16,6 +17,7 @@ db=client['sample_mflix']
 collection=db['myCollection']
 
 api = Flask(__name__)
+CORS(api) 
 
 @api.route('/api')
 def home():
