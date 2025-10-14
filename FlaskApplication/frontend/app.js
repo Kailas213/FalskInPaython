@@ -26,7 +26,7 @@ app.post('/add_user', async (req, res) => {
         res.render('index', { message: data.message });
     } catch (err) {
         console.error(err);
-        res.render('index', { message: 'Error submitting data' });
+        res.render('index', { message: 'Error submitting data'+ err });
     }
 });
 
