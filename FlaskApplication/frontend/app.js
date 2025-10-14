@@ -14,7 +14,6 @@ app.get('/', (req, res) => {
 const SubmitURL = 'http://backed-on-separate-instance.carbikeinfo.in/add_user';
 
 
-
 app.post('/add_user', async (req, res) => {
     try {
         const response = await fetch(SubmitURL, {
@@ -22,13 +21,21 @@ app.post('/add_user', async (req, res) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body)
         });
+
+        // Check if response is OK
+        if (!response.ok) {
+            const text = await response.text();  // get full response body
+            throw new Error(`Backend returned ${response.status}: ${text}`);
+        }
+
         const data = await response.json();
-        res.render('index', { message: data.message });
+        res.render('index', { message: 'Success! Data submitted.' });
     } catch (err) {
-        console.error(err);
-        res.render('index', { message: 'Error submitting data'+ err });
+        console.error('Full error:', err);
+        res.render('index', { message: 'Error submitting data: ' + err.message });
     }
 });
+
 
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
