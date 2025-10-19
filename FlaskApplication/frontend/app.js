@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.render('index'); // must match views/index.ejs
 });
-const SubmitURL = 'http://backed-on-separate-instance.carbikeinfo.in/add_user';
+const SubmitURL = 'http://backed-on-ecr-ecs-instance.carbikeinfo.in/add_user';
 
 
 app.post('/add_user', async (req, res) => {
@@ -38,7 +38,7 @@ app.post('/add_user', async (req, res) => {
 
 
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+app.listen(80, () => console.log('Server running on http://localhost:80'));
 
 
 
