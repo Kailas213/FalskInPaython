@@ -3,3 +3,9 @@ node_modules/
 __pycache__/
 *.pyc
 .env
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfplan

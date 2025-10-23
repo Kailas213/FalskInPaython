@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybackendapp
+  namespace: kailas-frontend-and-backend-appilcations
+  labels:
+    desc: "My-Backend-Application-Deployment"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mybackendapp
+  template:
+    metadata:
+      labels:
+        app: mybackendapp
+    spec:
+      containers:
+      - name: backend-app
+        image: docker.io/kupatekailas213213/kailas-backend:latest
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mybackendapp  
+  namespace: kailas-frontend-and-backend-appilcations
+spec:
+  selector:
+    app: mybackendapp
+  ports:
+  - port: 5000
+    targetPort: 8000
